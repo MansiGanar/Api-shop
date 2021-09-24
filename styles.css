@@ -1,0 +1,48 @@
+body {
+  background-color: cadetblue;
+}
+.container {
+  background-color: aqua;
+
+  /* text-align: center; */
+}
+
+.showproduct {
+  background-color: cadetblue;
+}
+.card {
+  background-color: aqua;
+}
+
+input {
+  width: 20%;
+  height: 20px;
+  position: relative;
+  left: 25%;
+
+  margin: 10px;
+  /* border-radius: 20px; */
+}
+label {
+  font-size: 25px;
+  position: relative;
+  left: 20%;
+}
+.Submitbutton {
+  margin-top: 10px;
+  color: black;
+  background-color: lightcoral;
+  width: 10%;
+  height: 2rem;
+  border-radius: 20px;
+  position: relative;
+  left: 31%;
+}
+hr {
+  color: rgb(155, 16, 16);
+}
+
+.deleteButton {
+  position: absolute;
+  bottom: 3%;
+}

@@ -24,14 +24,24 @@ const fetchData = async () => {
 
 const displayAll = async (products) => {
   let showProducts = document.getElementById("productstoshow");
+  showProducts.innerHTML = "";
 
-  let newinnerHtml = `<div class="card">
-    <img src="..." class="card-img-top" alt="...">
+  console.log(products);
+
+  products.forEach((element) => {
+    console.log(element);
+    showProducts.innerHTML += `<div class="card m-3 pl-3 " style="width:15rem">
+    <img src=${element.imageUrl} class="card-img-top ml-4 pt-3 " style="width:10rem" alt="...">
+    <hr>
     <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text"></p>
-      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    
+      <h5 class="card-title">${element.brand}</h5>
+      <p class="card-text">${element.description}</p>
+      <p class="card-text">${element.price}</p>
+      <p class="card-text">${element.name}</p>
+      <p class="text-muted">${element._id}</p>
+      <button class="deleteButton btn-danger" type="delete">Delete</button>
     </div>
   </div>`;
-  showProducts += newinnerHtml;
+  });
 };

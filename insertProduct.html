@@ -5,20 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <h1>Add Products</h1>
+    <div class="container">
+      <form id="dataToPost">
+        <label for="name">Name:</label>
+        <input type="text" name="fname" /><br />
+        <label for="des">Description:</label>
+        <input
+          type="text"
+          name="description"
+          style="position: relative; left: 259px"
+        /><br />
+        <label for="brand">Brand:</label>
+        <input type="text" name="brand" /><br />
+        <label for="price">Price:</label>
+        <input
+          type="number"
+          name="price"
+          style="position: relative; left: 326px"
+        /><br />
+        <label for="imageurl">Image:</label>
+        <input type="text" name="imageUrl" /><br />
+        <button type="submit" class="Submitbutton">Submit</button>
+      </form>
+    </div>
     <script src="insert.js"></script>
-    <form onsubmit="putData(e)" id="dataToPost">
-      <label for="name">Name:</label>
-      <input type="text" name="name" /><br />
-      <label for="des">Description:</label>
-      <input type="text" name="des" /><br />
-      <label for="brand">Brand:</label>
-      <input type="text" name="brand" /><br />
-      <label for="price">Price:</label>
-      <input type="number" name="price" /><br />
-      <input type="text" name="url" /><br />
-      <input type="submit" value="Submit" />
-    </form>
   </body>
 </html>
