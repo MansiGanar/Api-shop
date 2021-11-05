@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <a class="navbar-brand">Navbar</a>
+      <a class="navbar-brand" href="/index.html">Home</a>
+    </nav>
+    <h1>Add Products</h1>
+    <form class="container">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          class="form-control"
+          id="name"
+          placeholder="Iphone"
+          style="width: 50%"
+        />
+      </div>
+      <div class="form-group">
+        <label for="brand">Brand</label>
+        <input
+          class="form-control"
+          id="brand"
+          placeholder="Apple"
+          style="width: 50%"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input
+          type="number"
+          class="form-control"
+          id="price"
+          placeholder="1$"
+          style="width: 50%"
+        />
+      </div>
+      <div class="form-group">
+        <label for="imageUrl">Image URL</label>
+
+        <input
+          class="form-control"
+          id="imageUrl"
+          value="http://placehold.it/300x400"
+          placeholder="http://placehold.it/300*400"
+          style="width: 50%"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" rows="3"></textarea>
+      </div>
+
+      <div class="form-group d-flex justify-content-end">
+        <button type="reset" class="btn btn-outline-dark mr-2 w-25">
+          Reset
+        </button>
+        <button type="submit" class="btn btn-warning mr-2 w-25">Save</button>
+      </div>
+    </form>
+
+    <script>
+      const BASE_URL = "https://striveschool-api.herokuapp.com/api/product/";
+      const headers = new Headers({
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMmEwMDRiYjUzZDAwMTViMTlmODkiLCJpYXQiOjE2MzYxMDc1MzAsImV4cCI6MTYzNzMxNzEzMH0.7hiJNrzQum36Zrgsy0IQ7tpHVseiTF-lGEt1K5pG_vY",
+      });
+
+      const postProduct = (product) => {
+        fetch(BASE_URL, {
+          headers,
+          method: "POST",
+          body: JSON.stringify(product),
+        })
+          .then((res) => res.json())
+          .then((data) => console.log(data))
+          .catch((error) => console.log(error));
+      };
+      const formOnSubmit = (e) => {
+        e.preventDefault();
+        const name = document.querySelector("#name").value;
+        const brand = document.querySelector("#brand").value;
+        const imageUrl = document.querySelector("#imageUrl").value;
+        const price = parseInt(document.querySelector("#price").value);
+        const description = document.querySelector("#description").value;
+        const product = { name, brand, imageUrl, price, description };
+        postProduct(product, (err, data) => {
+          if (err) {
+            console.log({ err });
+          } else {
+            e.target.reset();
+            alert("product is added");
+          }
+        });
+
+        console.log({ product });
+      };
+      window.onload = () => {
+        const form = document.querySelector("form");
+        form.onsubmit = formOnSubmit;
+      };
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+      crossorigin="anonymous"
+    ></script>
+    <script src="app.js"></script>
+  </body>
+</html>

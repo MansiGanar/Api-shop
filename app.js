@@ -1,48 +1,61 @@
-let allData;
 window.onload = async () => {
-  await fetchData();
+  // getProducts((error, data) => {
+  //   if (error) {
+  //     console.log({ error });
+  //   } else {
+  //     console.log({ data });
+  //   }
+  // });
+  await getProducts();
 };
-let allProducts;
-const fetchData = async () => {
+
+const BASE_URL = "https://striveschool-api.herokuapp.com/api/product/";
+const headers = new Headers({
+  "Content-Type": "application/json",
+  Authorization:
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMmEwMDRiYjUzZDAwMTViMTlmODkiLCJpYXQiOjE2MzYxMDc1MzAsImV4cCI6MTYzNzMxNzEzMH0.7hiJNrzQum36Zrgsy0IQ7tpHVseiTF-lGEt1K5pG_vY",
+});
+
+// const getProducts = (callback) => {
+//   fetch(BASE_URL, { headers })
+//     .then((res) => res.json())
+//     .then((data) => callback(null, data))
+//     .catch((error) => callback(error, null));
+// };
+
+const getProducts = async () => {
   try {
-    let response = await fetch(
-      "https://striveschool-api.herokuapp.com/api/product/",
-      {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMmEwMDRiYjUzZDAwMTViMTlmODkiLCJpYXQiOjE2MzIzMTU5MDQsImV4cCI6MTYzMzUyNTUwNH0.XEyGL0co4MoD-hfKjeEVQoXEjm_JQ91ygqIVkDcnVv4",
-        },
-      }
-    );
-    console.log(response);
-    let products = await response.json();
-    allproducts = await products;
-    displayAll(allproducts);
+    await fetch(BASE_URL, { headers })
+      .then((res) => res.json())
+      .then((data) => {
+        let content = document.getElementById("card-deck");
+        content.innerHTML = "";
+        console.log(data);
+        data.map((product) => {
+          console.log(product);
+          console.log("hii");
+          content.innerHTML += `  <div class="container " id="card-deck">
+          <div class="card-deck">
+            <div class="card "> 
+              <img src="${product.imageUrl}" class="card-img-top image" alt="..." />
+              <div class="card-body">
+                <h5 class="card-title">${product.brand}</h5>
+                <p class="card-text">
+                  This is a longer card with supporting text below as a natural
+                  lead-in to additional content. This content is a little bit
+                  longer.
+                </p>
+                <p class="card-text">
+                  <small class="text-muted">Last updated 3 mins ago</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>`;
+        });
+        content;
+      });
   } catch (error) {
     console.log(error);
   }
-};
-
-const displayAll = async (products) => {
-  let showProducts = document.getElementById("productstoshow");
-  showProducts.innerHTML = "";
-
-  console.log(products);
-
-  products.forEach((element) => {
-    console.log(element);
-    showProducts.innerHTML += `<div class="card m-3 pl-3 " style="width:15rem">
-    <img src=${element.imageUrl} class="card-img-top ml-4 pt-3 " style="width:10rem" alt="...">
-    <hr>
-    <div class="card-body">
-    
-      <h5 class="card-title">${element.brand}</h5>
-      <p class="card-text">${element.description}</p>
-      <p class="card-text">${element.price}</p>
-      <p class="card-text">${element.name}</p>
-      <p class="text-muted">${element._id}</p>
-      <button class="deleteButton btn-danger" type="delete">Delete</button>
-    </div>
-  </div>`;
-  });
 };

@@ -46,3 +46,10 @@ hr {
   position: absolute;
   bottom: 3%;
 }
+
+.image {
+  width: 250px;
+}
+/* .container {
+  display: flex;
+} */
