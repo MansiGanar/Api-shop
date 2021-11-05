@@ -14,6 +14,7 @@ const fetchData = async () => {
         },
       }
     );
+    console.log(response);
     let products = await response.json();
     allproducts = await products;
     displayAll(allproducts);
