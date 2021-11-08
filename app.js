@@ -29,31 +29,31 @@ const getProducts = async () => {
       .then((res) => res.json())
       .then((data) => {
         let content = document.getElementById("card-deck");
-        content.innerHTML = "";
+        // content.innerHTML = "";
         console.log(data);
         data.map((product) => {
           console.log(product);
           console.log("hii");
-          content.innerHTML += `  <div class="container " id="card-deck">
-          <div class="card-deck">
-            <div class="card "> 
+          const newInnerHtml = `  <div class="container " id="card-deck">
+          <div class="card-deck p-3">
+            <div class="card p-5">
               <img src="${product.imageUrl}" class="card-img-top image" alt="..." />
               <div class="card-body">
-                <h5 class="card-title">${product.brand}</h5>
-                <p class="card-text">
-                  This is a longer card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer.
+                <h5 class="card-title">Brand: ${product.brand}</h5>
+                <h5 class="card-title">Name: ${product.name}</h5>
+                <p class="card-text">Description:
+                ${product.description}
                 </p>
-                <p class="card-text">
-                  <small class="text-muted">Last updated 3 mins ago</small>
-                </p>
+                
               </div>
+              <a class="btn btn-success w-25" href="back.html?id=${product._id}"> Edit </a>
+              <a class="btn btn-info w-25" href="detail.html?id=${product._id}"> See details </a>
             </div>
+            
           </div>
         </div>`;
+          content.innerHTML += newInnerHtml;
         });
-        content;
       });
   } catch (error) {
     console.log(error);

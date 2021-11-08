@@ -18,11 +18,12 @@
       <a class="navbar-brand">Navbar</a>
       <a class="navbar-brand" href="/index.html">Home</a>
     </nav>
-    <h1>Add Products</h1>
+    <h1 id="page-title">Add Products</h1>
     <form class="container">
       <div class="form-group">
         <label for="name">Name</label>
         <input
+          required
           class="form-control"
           id="name"
           placeholder="Iphone"
@@ -32,6 +33,7 @@
       <div class="form-group">
         <label for="brand">Brand</label>
         <input
+          required
           class="form-control"
           id="brand"
           placeholder="Apple"
@@ -42,6 +44,7 @@
       <div class="form-group">
         <label for="price">Price</label>
         <input
+          required
           type="number"
           class="form-control"
           id="price"
@@ -53,6 +56,7 @@
         <label for="imageUrl">Image URL</label>
 
         <input
+          required
           class="form-control"
           id="imageUrl"
           value="http://placehold.it/300x400"
@@ -71,10 +75,26 @@
           Reset
         </button>
         <button type="submit" class="btn btn-warning mr-2 w-25">Save</button>
+        <button
+          id="delete-btn"
+          type="button"
+          class="d-none btn btn-danger mr-2 w-25"
+          onclick="deleteProduct()"
+        >
+          Delete
+        </button>
       </div>
     </form>
-
+    <div id="loader" class="d-none">
+      <div class="overlay"></div>
+      <div class="spinner spinner-border m-5 danger" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
     <script>
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
+
       const BASE_URL = "https://striveschool-api.herokuapp.com/api/product/";
       const headers = new Headers({
         "Content-Type": "application/json",
@@ -82,15 +102,29 @@
           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMmEwMDRiYjUzZDAwMTViMTlmODkiLCJpYXQiOjE2MzYxMDc1MzAsImV4cCI6MTYzNzMxNzEzMH0.7hiJNrzQum36Zrgsy0IQ7tpHVseiTF-lGEt1K5pG_vY",
       });
 
-      const postProduct = (product) => {
-        fetch(BASE_URL, {
+      const method = id ? "PUT" : "POST";
+
+      const postProduct = (product, callback) => {
+        const endpoint = id ? BASE_URL + id : BASE_URL;
+        fetch(endpoint, {
           headers,
-          method: "POST",
+          method,
           body: JSON.stringify(product),
         })
           .then((res) => res.json())
-          .then((data) => console.log(data))
-          .catch((error) => console.log(error));
+          .then((data) => callback(null, data))
+          .catch((error) => callback(error, null));
+      };
+      const callbackFun = (error, data) => {
+        console.log("tehre hii");
+        if (error) {
+          alert(error.message);
+          console.log({ error });
+        } else {
+          alert("product is added");
+          e.target.reset();
+          console.log("hii");
+        }
       };
       const formOnSubmit = (e) => {
         e.preventDefault();
@@ -100,20 +134,60 @@
         const price = parseInt(document.querySelector("#price").value);
         const description = document.querySelector("#description").value;
         const product = { name, brand, imageUrl, price, description };
-        postProduct(product, (err, data) => {
-          if (err) {
-            console.log({ err });
-          } else {
-            e.target.reset();
-            alert("product is added");
-          }
-        });
 
-        console.log({ product });
+        postProduct(product, callbackFun);
       };
+      async function getProductDetails(id) {
+        // setLoading(true);
+        try {
+          const response = await fetch(BASE_URL + id, { headers });
+          const product = await response.json();
+          console.log(product);
+          Object.keys(product).forEach((key) => {
+            // document.querySelector(``)
+
+            const field = document.querySelector(`#${key}`);
+            if (field) field.value = product[key];
+          });
+        } catch (error) {
+          alert(error.message);
+        }
+        // setLoading(false);
+      }
+
+      async function deleteProduct() {
+        try {
+          const response = await fetch(BASE_URL + id, {
+            method: "DELETE",
+            headers,
+          });
+          if (!response.ok) throw new Error("Failed to delete product");
+          alert("All good- product deleted successfully");
+          location.assign("index.html");
+        } catch (error) {
+          alert(error.message);
+        }
+      }
+
+      const loader = document.getElementById("loader");
+
+      function setLoading(loading) {
+        if (loading) {
+          loader.classList.remove("d-none");
+        } else {
+          loader.classList.add("d-none");
+        }
+      }
+
       window.onload = () => {
         const form = document.querySelector("form");
         form.onsubmit = formOnSubmit;
+
+        if (id) {
+          document.querySelector("#page-title").innerHTML = "Edit Product";
+          document.querySelector("#delete-btn").classList.remove("d-none");
+          getProductDetails(id);
+        }
       };
     </script>
     <script

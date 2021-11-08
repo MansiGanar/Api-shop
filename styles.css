@@ -53,3 +53,21 @@ hr {
 /* .container {
   display: flex;
 } */
+
+#loader .overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  width: 100vw;
+
+  background-color: rgba(57, 197, 197, 0.637);
+}
+
+#loader .spinner {
+  color: #a22424;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* transform: translate(-50%, -50%); */
+}
